@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 用户持久层映射 -->
+<mapper namespace="niip.funnycheer.mapper.UserMapper">
+	<!-- 插入用户 -->
+	<insert id="insertUser" parameterType="user">
+		insert into `user`(userid,username,password,usernickname,useremail,usericon,userregisttime,useridentity) 
+		values(#{userid},#{username},#{password},#{usernickname},#{useremail},#{usericon},#{userregisttime},#{useridentity})
+	</insert>
+	<!-- 通过用户昵称查询用户 -->
+	<select id="getUserByUserNickName" parameterType="string" resultType="user">
+		SELECT * FROM user WHERE usernickname=#{usernickname}
+	</select>
+	<!-- 通过用户名查询用户 -->
+	<select id="getUserByUsername" parameterType="string" resultType="user">
+		SELECT * FROM user WHERE username=#{username}
+	</select>
+	<!-- 通过用户邮箱查询用户 -->
+	<select id="getUserByUseremail" parameterType="string" resultType="user">
+		SELECT * FROM user WHERE useremail=#{useremail}
+	</select>
+	<!-- 通过userid查询用户 -->
+	<select id="getUserByUserid" parameterType="string" resultType="user">
+		select * from user where userid=#{userid}
+	</select>
+	<!-- 更新用户描述 -->
+	<update id="updateUserDesc">
+		update user set userdesc=#{userdesc} where userid=#{userid}
+	</update>
+	<!-- 新增和更新用户基础信息 -->
+	<update id="updateUserBaseInfo">
+		update user 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userphone!=null and userphone!=''">
+				userphone=#{userphone},
+			</if>
+			<if test="usersex!=null and usersex!=''">
+				usersex=#{usersex},
+			</if>
+			<if test="userbirthday!=null and userbirthday!=''">
+				userbirthday=#{userbirthday}, 
+			</if>
+			<if test="useridentity==1">
+				useridentity=1
+			</if>
+			<if test="useridentity==2">
+				useridentity=2
+			</if>
+		</trim>
+		where userid=#{userid} 
+	</update>
+	<!-- 新增和更新专题主信息 -->
+	<update id="updateUserSubjectInfo">
+		update user 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="usertruename!=null and usertruename!=''">
+				usertruename=#{usertruename},
+			</if>
+			<if test="useraddress!=null and useraddress!=''">
+				useraddress=#{useraddress},
+			</if>
+			<if test="useridentitycard!=null and useridentitycard!=''">
+				useridentitycard=#{useridentitycard}, 
+			</if>
+				useridentity=2
+		</trim>
+		where userid=#{userid} 
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

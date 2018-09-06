@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 管理员持久层映射 -->
+<mapper namespace="niip.funnycheer.mapper.AdminMapper">
+	<!-- 查询所有用户 -->
+	<select id="findAllUser" resultType="user">
+		select * from user
+	</select>
+	<!-- 查询所有App -->
+	<select id="findAllApp" resultType="application">
+		select * from app
+	</select>
+	<!-- 查询所有分类 -->
+	<select id="findAllCategory" resultType="applicationcategory">
+		select * from appcategory
+	</select>
+	<!-- 新增分类 -->
+	<insert id="insertCategory">
+		insert into appcategory values(#{appcategoryid},#{appcategoryone},#{appcategoryname})
+	</insert>
+	<!-- 查询所有开发者 -->
+	<select id="findAllDeveloper" resultType="developer">
+		select * from developer
+	</select>
+	<!-- 新增开发者 -->
+	<insert id="insertDeveloper">
+		insert into developer values(#{developerid},#{developername})
+	</insert>
+	<!-- 新增App -->
+	<insert id="insertApplication" parameterType="application">
+		insert into app(appid,appname,appcategoryid,developerid,appsize,appversion,appprice,appsynopsis,appdesc,appicon,appupdatetime) 
+		values(#{appid},#{appname},#{appcategoryid},#{developerid},#{appsize},#{appversion},#{appprice},#{appsynopsis},#{appdesc},#{appicon},#{appupdatetime})
+	</insert>
+	<!-- 根据一级分类查询二级分类 -->
+	<select id="getAppcategoryByOne" parameterType="string" resultType="applicationCategory">
+		select * from appcategory where appcategoryone=#{appcategoryone}
+	</select>
+</mapper>

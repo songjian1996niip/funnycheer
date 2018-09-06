@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- application持久层映射 -->
+<mapper namespace="niip.funnycheer.mapper.ApplicationMapper">
+	<!-- 查询热门Application -->
+	<select id="getHotApplication" parameterType="string" resultType="application">
+		select * FROM app a WHERE appcategoryid in 
+		(SELECT c.appcategoryid from appcategory c WHERE c.appcategoryone=#{appcategoryone}) 
+		ORDER BY a.appdownloadcount DESC LIMIT 8	
+	</select>
+	<!-- 根据appid查询单个Application -->
+	<select id="getApplicationByAppid" parameterType="string" resultType="application">
+		select * from app where appid=#{appid}
+	</select>
+	<!-- 根据developerid查询单个开发者 -->
+	<select id="getDeveloperByDevelpoerid" parameterType="string" resultType="developer">
+		select * from developer where developerid=#{developerid}
+	</select>
+	<!-- 根据developerid查询同一开发者的Application -->
+	<select id="getApplicationByDeveloperid" parameterType="string" resultType="application">
+		select * from app where developerid=#{developerid} 
+	</select>
+	<!-- 根据appcategoryid查询同一分类的Application --><!-- 根据分类id的集合查询所有app或者游戏 -->
+	<select id="getApplicationByAppCategoryid" parameterType="string" resultType="application">
+		select * from app where appcategoryid = #{appcategoryid}
+	</select>
+	<!-- 根据一级目录查询Appcategory -->
+	<select id="getAppcategoryByAppcategoryOne" parameterType="string" resultType="applicationCategory">
+		select * from appcategory where appcategoryone=#{appcategoryone}
+	</select>
+	<!-- 获取所有Application总数 -->
+	<select id="getApplicationCount" resultType="int">
+		select count(1) from app
+	</select>
+	<!-- 通过当前一级目录获取所有Application总数 -->
+	<select id="getApplicationCountByAppCategoryOne" parameterType="string" resultType="int">
+		select count(1) FROM app a WHERE appcategoryid in 
+		(SELECT c.appcategoryid from appcategory c WHERE c.appcategoryone=#{appcategoryone})
+	</select>
+	<!-- 获取当前分类的Application总数 -->
+	<select id="getAppCountByCategoryid" parameterType="string" resultType="int">
+		select count(1) from app where appcategoryid=#{appcategoryid} 
+	</select>
+	<!-- 根据当前一级目录获取所有分类id -->
+	<select id="getAppCategoryidByAppCategoryOne" parameterType="string" resultType="string">
+		select appcategoryid from appcategory where appcategoryone=#{appcategoryone}
+	</select>
+	<!-- 根据分类获取Application分页 -->
+	<select id="getAllApplicationByPage" resultType="application">
+		select * from app where appcategoryid in 
+			<foreach item="appcategoryid" index="index" collection="list" open="(" separator="," close=")">
+				#{appcategoryid}
+			</foreach>
+			limit #{startindex},#{pagesize}
+	</select>
+	<!-- 获取当前Application的评论总数 -->
+	<select id="getCommentsCountByAppid" parameterType="string" resultType="int">
+		select count(1) from appcomment where appid=#{appid}
+	</select>
+	<!-- 根据appid分页获取评论 -->
+	<select id="getCommentsByAppidPage" resultType="appcomment">
+		select * from appcomment where appid=#{appid} ORDER BY commentdate DESC limit #{startindex},#{pagesize}
+	</select>
+	<!-- 新增评论 -->
+	<insert id="insertComments" parameterType="appcomment">
+		insert into appcomment values(#{commentid},#{usernickname},#{appid},#{commentcontent},#{commentdate},#{commentscore})
+	</insert>
+	<!-- 增加下载量 -->
+	<update id="toCountDownload" parameterType="string">
+		update app set appdownloadcount=appdownloadcount+1 WHERE appid=#{appid}
+	</update>
+	
+	
+	<!-- 分页获取Application -->
+	<!-- <select id="getAllApplicationByPage" parameterType="Map" resultType="application">
+		select * from app limit	#{startindex},#{pagesize}
+	</select> -->
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- test -->
+	<select id="test" parameterType="string" resultType="application">
+		<bind name="keyword" value="'%'+appname+'%'"/>
+		select * from app where appname like #{keyword} limit 5
+	</select>
+	
+	
+	
+	
+	
+
+</mapper>
