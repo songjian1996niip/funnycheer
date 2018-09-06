@@ -1,3 +1,3 @@
 #funnycheer
 find your funny,so cheer up!
-#jspÒ³ÃæÔÚWEB-INFÄ¿Â¼ÏÂ
+#jspé¡µé¢åœ¨WEB-INFç›®å½•ä¸‹
